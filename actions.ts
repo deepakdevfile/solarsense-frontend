@@ -36,3 +36,20 @@ export async function registerUser(formData: FormData){
         console.log((error as Error).message)
     }
 }
+
+export async function loginUser(formData: FormData){
+    const email = formData.get("email")
+    const password = formData.get("password")
+
+    // console.log(email)
+    // console.log(password)
+
+    try{
+        const res = await api("/auth/login", {
+            method: "POST",
+            body: JSON.stringify({email, password})
+        })
+    } catch(error){
+        console.log((error as Error).message)
+    }
+}
