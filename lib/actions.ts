@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { UserData } from "./types";
 
 const API = process.env.NEXT_PUBLIC_API_URL
 
@@ -19,38 +19,35 @@ async function api(path: string, options: RequestInit = {}){
 }
 
 
-export async function registerUser(formData: FormData){
-    const email = formData.get("email")
-    const password = formData.get("password")
+export async function registerUser(formData: UserData){
+    const email = formData.email
+    const password = formData.password
 
     try{
         const res = await api("/auth/register", {
           method: "POST",
           body: JSON.stringify({email, password}),
         });
-        console.log(res)
     } catch(error){
         console.log((error as Error).message)
     }
 }
 
-export async function loginUser(formData: FormData){
-    const email = formData.get("email")
-    const password = formData.get("password")
+export async function loginUser(formData: UserData){
+    const email = formData.email[0]
+    const password = formData.password[0]
 
     try{
         const res = await api("/auth/login", {
             method: "POST",
-            body: JSON.stringify({email, password})
-        })
+            body: JSON.stringify({email, password}),
+        });
     } catch(error){
         console.log((error as Error).message)
     }
 }
 
 export async function logoutUser(){
-    console.log("send it to backend")
-
     try{
         const res = await api("/auth/logout", {
             method: "POST",

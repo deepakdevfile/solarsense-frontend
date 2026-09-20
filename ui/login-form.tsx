@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { loginUser } from "@/actions"
+import { loginUser } from "@/lib/actions"
+import { useRouter } from "next/navigation"
 
 const initialState = {
     email: "",
@@ -11,14 +12,20 @@ const initialState = {
 export default function LoginForm(){
     const [formData, setFormData] = useState(initialState)
     const {email, password} = formData
+    const router = useRouter()
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>){
         e.preventDefault()
         setFormData(prevState => ({...prevState, [e.target.name]: [e.target.value]}))
     }
 
+    function handleSubmit(){
+        loginUser(formData)
+        router.push("/dashboard")
+    }
+
     return (
-        <form action={loginUser}>
+        <form action={handleSubmit}>
             <label htmlFor="email"> Email: </label>
             <input 
                 type="email" 

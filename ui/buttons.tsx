@@ -1,15 +1,22 @@
 'use client'
 
-import { logoutUser } from "@/actions";
-
-function handleClick(){
-    console.log("Button works, implement functionality from actions");
-}
+import { logoutUser } from "@/lib/actions";
+import { useRouter } from "next/navigation";
+// import { signOut } from "next-auth/react";
 
 export function LogoutButton(){
-    return(
-        <button onClick={logoutUser}>
-            Logout
-        </button>
-    )
+    const router = useRouter()
+
+    async function handleClick(){
+        logoutUser()
+        // await signOut({ callbackUrl: "/login" });
+        router.push("/")
+    }
+    
+
+    return (
+      <>
+        <button onClick={handleClick}>Logout</button>
+      </>
+    );
 }

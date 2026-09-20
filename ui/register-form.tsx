@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { registerUser } from "@/actions"
+import { registerUser } from "@/lib/actions"
+import { useRouter } from "next/navigation";
 
 const initialState = {
     email: '',
@@ -11,19 +12,19 @@ const initialState = {
 export default function RegisterForm(){
     const [formData, setFormData] = useState(initialState)
     const {email, password} = formData
+    const router = useRouter();
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>){
         setFormData(prevState => ({...prevState, [e.target.name]: e.target.value}))
     }
 
     function handleSubmit(){
-        console.log(formData)
-        console.log(email)
-        console.log(password)
+        registerUser(formData);
+        router.push("/dashboard")
     }
 
     return (
-        <form action={registerUser}>
+        <form action={handleSubmit}>
             <label htmlFor="email"> Email: </label>
             <input 
                 type="email" 
