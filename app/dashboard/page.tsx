@@ -1,6 +1,6 @@
 import DashboardPage from "@/ui/dashboard"
 
-export default function Dashboard(){
+export default async function Dashboard(){
     return (
         <>
             <DashboardPage />

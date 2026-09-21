@@ -47,6 +47,17 @@ export async function loginUser(formData: UserData){
     }
 }
 
+export async function getUser() {
+  try {
+    const res = await api("/auth/current", {
+      method: "GET",
+    });
+    return res
+  } catch (error) {
+    console.log((error as Error).message);
+  }
+}
+
 export async function logoutUser(){
     try{
         const res = await api("/auth/logout", {
