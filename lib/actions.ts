@@ -1,4 +1,6 @@
 import { Installation, UserData } from "./types";
+import { signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const API = process.env.NEXT_PUBLIC_API_URL
 
@@ -45,17 +47,6 @@ export async function loginUser(formData: UserData){
     } catch(error){
         console.log((error as Error).message)
     }
-}
-
-export async function getUser() {
-  try {
-    const res = await api("/auth/current", {
-      method: "GET",
-    });
-    return res
-  } catch (error) {
-    console.log((error as Error).message);
-  }
 }
 
 export async function logoutUser(){
