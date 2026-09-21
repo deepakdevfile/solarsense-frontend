@@ -1,11 +1,14 @@
 import Email from "next-auth/providers/email";
 import { LogoutButton } from "./buttons";
 import InstallationForm from "./installation-form";
-import { getUser } from "@/lib/data";
+import { getUser, getInstallation } from "@/lib/data";
+import { InstallationID } from "@/lib/types";
 
 export default async function DashboardPage() {
   const user = await getUser()
-  console.log(user)
+  // console.log(user)
+  const installations = await getInstallation()
+  // console.log(installations)
 
   return (
     <main className="min-h-screen">
@@ -40,7 +43,15 @@ export default async function DashboardPage() {
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold">Installations</h2>
           <div className="mt-3 divide-y">
-            List of isntallations rendered
+            {installations.map((installation: InstallationID) => (
+              <div className="flex justify-between py-3" key={installation.id}>
+                <span>
+                  {installation.name}
+                  <small className="ml-2 text-slate-500">{installation.location}</small>
+                </span>
+                <span>{installation.capacity} kW</span>
+              </div>
+            ))}
           </div>
         </section>
       </div>
