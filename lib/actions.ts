@@ -1,4 +1,4 @@
-import { UserData } from "./types";
+import { Installation, UserData } from "./types";
 
 const API = process.env.NEXT_PUBLIC_API_URL
 
@@ -62,6 +62,23 @@ export async function logoutUser(){
     try{
         const res = await api("/auth/logout", {
             method: "POST",
+        })
+    } catch(error){
+        console.log((error as Error).message)
+    }
+}
+
+export async function addInstallation(formData: Installation){
+    const name = formData.name[0]
+    const location = formData.location[0]
+    const capacity = Number(formData.capacity)
+
+    // console.log(JSON.stringify({ name, location, capacity }));
+
+    try{
+        const res = await api("/installation", {
+            method: 'POST',
+            body: JSON.stringify({name, location, capacity})
         })
     } catch(error){
         console.log((error as Error).message)
