@@ -1,23 +1,23 @@
 "use client"
 
+import { updateInstallation } from "@/lib/actions";
 import { InstallationID } from "@/lib/types";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
 export function EditForm({ installation }: { installation: InstallationID }) {
   const [formData, setFormData] = useState(installation);
-  console.log(formData)
+//   console.log(formData)
   const { name, id, location, capacity } = formData;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    // setFormData((prevState) => ({
-    //     ...prevState,
-    //     [e.target.name]: [e.target.value],
-    // }));
+    setFormData((prevState) => ({...prevState, [e.target.name]: name === "capacity" ? Number([e.target.value]) : [e.target.value],
+    }));
   }
 
   function handleSubmit() {
-    console.log("It is submit able");
+    const res = updateInstallation(formData)
+    redirect("/dashboard")
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Installation, UserData } from "./types";
+import { Installation, InstallationID, UserData } from "./types";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -71,6 +71,28 @@ export async function addInstallation(formData: Installation){
             method: 'POST',
             body: JSON.stringify({name, location, capacity})
         })
+    } catch(error){
+        console.log((error as Error).message)
+    }
+}
+
+export async function updateInstallation(formData: InstallationID){
+    // console.log(formData);
+    const name = formData.name[0]
+    const id = formData.id
+    const location = formData.location[0]
+    const capacity = Number(formData.capacity)
+
+    // console.log(name)
+    // console.log(id)
+    // console.log(location)
+    // console.log(capacity)
+    try{
+        const res = await api(`/installation/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({name, location, capacity})
+        })
+        return res
     } catch(error){
         console.log((error as Error).message)
     }
