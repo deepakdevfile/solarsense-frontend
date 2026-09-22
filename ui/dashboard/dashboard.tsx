@@ -59,7 +59,12 @@ export default async function DashboardPage() {
                 <div className="flex items-center gap-4">
                   <span>{installation.capacity} kW</span>
                   {/* <EditButton id={installation.id} /> */}
-                  <Link href={`/dashboard/installation/${installation.id}/edit`}>Edit</Link>
+                  <Link
+                    href={`/dashboard/installation/${installation.id}/edit`}
+                    className="rounded-lg bg-slate-900 px-4 py- font-semibold text-white hover:bg-slate-700 disabled:opacity-50 "
+                  >
+                    Edit
+                  </Link>
                   <DeleteButton id={installation.id} />
                 </div>
               </div>
