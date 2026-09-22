@@ -38,13 +38,23 @@ export async function getUser() {
 }
 
 export async function getInstallation(){
-    try{
-        const res = api("/installation", {
-          method: "GET",
-        });
-        // console.log(res)
-        return res 
-    } catch(error){
-        console.log((error as Error).message);
-    }
+  try{
+      const res = api("/installation", {
+        method: "GET",
+      });
+      // console.log(res)
+      return res 
+  } catch(error){
+      console.log((error as Error).message);
+  }
+}
+
+export async function editInstallation( id: Number ){
+  try{
+    const res = api(`/installation/${id}`, {
+      method: "POST"
+    })
+  } catch(error){
+    console.log((error as Error).message)
+  }
 }

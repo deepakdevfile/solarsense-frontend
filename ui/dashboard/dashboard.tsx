@@ -1,9 +1,11 @@
-import Email from "next-auth/providers/email";
-import { LogoutButton } from "./buttons";
-import InstallationForm from "./installation-form";
-import { getUser, getInstallation, getMeasurement } from "@/lib/data";
+
+import { LogoutButton } from "../logout/buttons";
+import InstallationForm from "./installation/installation-form";
+import { getUser, getInstallation } from "@/lib/data";
 import { InstallationID } from "@/lib/types";
-import { EditButton, DeleteButton } from "./installation-button";
+// EditButton;
+import { DeleteButton } from "./installation/installation-button";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const user = await getUser()
@@ -56,7 +58,8 @@ export default async function DashboardPage() {
                 </span>
                 <div className="flex items-center gap-4">
                   <span>{installation.capacity} kW</span>
-                  <EditButton id={installation.id} />
+                  {/* <EditButton id={installation.id} /> */}
+                  <Link href={`/installation/${installation.id}/edit`}>Edit</Link>
                   <DeleteButton id={installation.id} />
                 </div>
               </div>
