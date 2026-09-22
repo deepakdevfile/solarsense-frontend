@@ -49,12 +49,13 @@ export async function getInstallation(){
   }
 }
 
-export async function editInstallation( id: Number ){
-  try{
+export async function getInstallationById( id : number ){
+  try {
     const res = api(`/installation/${id}`, {
-      method: "POST"
-    })
-  } catch(error){
+      method: "GET",
+    });
+    return res;
+  } catch (error){
     console.log((error as Error).message)
   }
 }

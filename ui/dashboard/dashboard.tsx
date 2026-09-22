@@ -59,7 +59,7 @@ export default async function DashboardPage() {
                 <div className="flex items-center gap-4">
                   <span>{installation.capacity} kW</span>
                   {/* <EditButton id={installation.id} /> */}
-                  <Link href={`/installation/${installation.id}/edit`}>Edit</Link>
+                  <Link href={`/dashboard/installation/${installation.id}/edit`}>Edit</Link>
                   <DeleteButton id={installation.id} />
                 </div>
               </div>
