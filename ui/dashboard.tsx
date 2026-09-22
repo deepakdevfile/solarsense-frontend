@@ -1,14 +1,17 @@
 import Email from "next-auth/providers/email";
 import { LogoutButton } from "./buttons";
 import InstallationForm from "./installation-form";
-import { getUser, getInstallation } from "@/lib/data";
+import { getUser, getInstallation, getMeasurement } from "@/lib/data";
 import { InstallationID } from "@/lib/types";
+import { EditButton, DeleteButton } from "./installation-button";
 
 export default async function DashboardPage() {
   const user = await getUser()
   // console.log(user)
   const installations = await getInstallation()
   // console.log(installations)
+  // const measurements = await getMeasurement()
+  // console.log(measurements)
 
   return (
     <main className="min-h-screen">
@@ -23,7 +26,7 @@ export default async function DashboardPage() {
         <div className="grid gap-4 md:grid-cols-3">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-slate-500">Installation</p>
-            <b className="text-3xl">Item length</b>
+            <b className="text-3xl">{installations.length}</b>
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-slate-500">Readings</p>
@@ -47,9 +50,15 @@ export default async function DashboardPage() {
               <div className="flex justify-between py-3" key={installation.id}>
                 <span>
                   {installation.name}
-                  <small className="ml-2 text-slate-500">{installation.location}</small>
+                  <small className="ml-2 text-slate-500">
+                    {installation.location}
+                  </small>
                 </span>
-                <span>{installation.capacity} kW</span>
+                <div className="flex items-center gap-4">
+                  <span>{installation.capacity} kW</span>
+                  <EditButton id={installation.id} />
+                  <DeleteButton id={installation.id} />
+                </div>
               </div>
             ))}
           </div>
