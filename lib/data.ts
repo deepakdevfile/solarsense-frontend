@@ -1,3 +1,5 @@
+'use server'
+
 import { cookies } from "next/headers";
 
 const API = process.env.NEXT_PUBLIC_API_URL;

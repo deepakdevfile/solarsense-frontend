@@ -1,5 +1,8 @@
+'use server'
+
 import { Installation, InstallationID, UserData } from "./types";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -28,6 +31,15 @@ export async function registerUser(formData: UserData) {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
+
+    const cookieStore = await cookies();
+    cookieStore.set("access-token", res.access_token, {
+      httpOnly: true, // 🛡️ Blocks JavaScript access (Prevents XSS)
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
+    });
   } catch (error) {
     console.log((error as Error).message);
   }
@@ -45,6 +57,14 @@ export async function loginUser(formData: UserData) {
       body: JSON.stringify({ email, password }),
     });
     // console.log(res.headers.get("set-cookie"));
+    const cookieStore = await cookies();
+    cookieStore.set("access-token", res.access_token, {
+      httpOnly: true, // 🛡️ Blocks JavaScript access (Prevents XSS)
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
+    });
   } catch (error) {
     console.log((error as Error).message);
   }
@@ -57,9 +77,14 @@ export async function logoutUser() {
     const res = await api("/auth/logout", {
       method: "POST",
     });
+
+    const cookieStore = await cookies();
+    cookieStore.delete("access-token");
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect('/')
 }
 
 export async function addInstallation(formData: Installation) {
