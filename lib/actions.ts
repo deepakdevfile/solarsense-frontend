@@ -1,5 +1,4 @@
 import { Installation, InstallationID, UserData } from "./types";
-import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const API = process.env.NEXT_PUBLIC_API_URL;
@@ -32,6 +31,8 @@ export async function registerUser(formData: UserData) {
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect("/dashboard");
 }
 
 export async function loginUser(formData: UserData) {
@@ -43,9 +44,12 @@ export async function loginUser(formData: UserData) {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
+    // console.log(res.headers.get("set-cookie"));
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect("/dashboard");
 }
 
 export async function logoutUser() {

@@ -21,7 +21,7 @@ export default function LoginForm(){
 
     function handleSubmit(){
         loginUser(formData)
-        router.push("/dashboard")
+        // router.push("/dashboard")
     }
 
     return (

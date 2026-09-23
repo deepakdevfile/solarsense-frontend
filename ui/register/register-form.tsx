@@ -20,7 +20,7 @@ export default function RegisterForm(){
 
     function handleSubmit(){
         registerUser(formData);
-        router.push("/dashboard")
+        // router.push("/dashboard")
     }
 
     return (
