@@ -17,7 +17,6 @@ export function EditForm({ installation }: { installation: InstallationID }) {
 
   function handleSubmit() {
     const res = updateInstallation(formData)
-    redirect("/dashboard")
   }
 
   return (

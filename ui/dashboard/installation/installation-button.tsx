@@ -1,8 +1,6 @@
 'use client'
 import { deleteInstallation } from "@/lib/actions";
 
-import { redirect } from "next/navigation";
-
 // export function EditButton( { id }: {id : number} ){
 //     function handleClick(){
 //         editInstallation(id)
@@ -17,7 +15,6 @@ import { redirect } from "next/navigation";
 export function DeleteButton({ id }: { id: number }){
   function handleClick(){
     deleteInstallation(id)
-    redirect("/dashboard")
   }
   return (
     <button 

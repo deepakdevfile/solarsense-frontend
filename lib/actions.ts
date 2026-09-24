@@ -122,13 +122,22 @@ export async function addInstallation(formData: Installation) {
   // console.log(JSON.stringify({ name, location, capacity }));
 
   try {
+    const cookieStore = await cookies();
+    // console.log(cookieStore);
+    const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
     const res = await api("/installation", {
       method: "POST",
       body: JSON.stringify({ name, location, capacity }),
+      headers: {
+        Cookie: `access-token=${token}`,
+      },
     });
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect("/dashboard")
 }
 
 export async function updateInstallation(formData: InstallationID) {
@@ -143,23 +152,39 @@ export async function updateInstallation(formData: InstallationID) {
   // console.log(location)
   // console.log(capacity)
   try {
+    const cookieStore = await cookies();
+    // console.log(cookieStore);
+    const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
     const res = await api(`/installation/${id}`, {
       method: "PUT",
       body: JSON.stringify({ name, location, capacity }),
+      headers: {
+        Cookie: `access-token=${token}`,
+      },
     });
-    return res;
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect("/dashboard");
 }
 
 export async function deleteInstallation(id: number) {
   try {
+    const cookieStore = await cookies();
+    // console.log(cookieStore);
+    const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
     const res = api(`/installation/${id}`, {
       method: "DELETE",
+      headers: {
+        Cookie: `access-token=${token}`,
+      },
     });
-    return res;
   } catch (error) {
     console.log((error as Error).message);
   }
+
+  redirect("/dashboard");
 }
