@@ -19,7 +19,7 @@ async function api(path: string, options: RequestInit = {}) {
     );
   }
 
-  return res.status === 204 ? null : res.json();
+  return res;
 }
 
 export async function registerUser(formData: UserData) {
@@ -31,15 +31,29 @@ export async function registerUser(formData: UserData) {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
+    // console.log("Registering user, inspect from here.")
 
-    const cookieStore = await cookies();
-    cookieStore.set("access-token", res.access_token, {
-      httpOnly: true, // 🛡️ Blocks JavaScript access (Prevents XSS)
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24, // 1 day
-    });
+    // console.log(res);
+    const setCookieHeader = res.headers.get("set-cookie");
+    // console.log(setCookieHeader);
+    if (setCookieHeader) {
+      const tokenMatch = setCookieHeader.match(/access_token=([^;]+)/);
+      // console.log(tokenMatch);
+      const token = tokenMatch ? tokenMatch[1] : null;
+      // console.log(token);
+      if (token) {
+        const cookieStore = await cookies();
+        cookieStore.delete({ name: "access-token", path: "/" });
+        cookieStore.set("access-token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          maxAge: 86400,
+        });
+        // console.log(cookieStore);
+      }
+    }
   } catch (error) {
     console.log((error as Error).message);
   }
@@ -56,15 +70,28 @@ export async function loginUser(formData: UserData) {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
-    // console.log(res.headers.get("set-cookie"));
-    const cookieStore = await cookies();
-    cookieStore.set("access-token", res.access_token, {
-      httpOnly: true, // 🛡️ Blocks JavaScript access (Prevents XSS)
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24, // 1 day
-    });
+
+    // console.log(res);
+    const setCookieHeader = res.headers.get("set-cookie");
+    // console.log(setCookieHeader);
+    if(setCookieHeader){
+      const tokenMatch = setCookieHeader.match(/access-token=([^;]+)/);
+      // console.log(tokenMatch);
+      const token = tokenMatch ? tokenMatch[1] : null;
+      // console.log(token);
+      if(token){
+        const cookieStore = await cookies();
+        cookieStore.delete({name: "access-token", path: '/'});
+        cookieStore.set('access-token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 86400,
+        });
+        // console.log(cookieStore);
+      }
+    }
   } catch (error) {
     console.log((error as Error).message);
   }
@@ -79,7 +106,7 @@ export async function logoutUser() {
     });
 
     const cookieStore = await cookies();
-    cookieStore.delete("access-token");
+    cookieStore.delete({name: "access-token", path: '/'});
   } catch (error) {
     console.log((error as Error).message);
   }

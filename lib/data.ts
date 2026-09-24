@@ -6,9 +6,9 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 
 async function api(path: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
-  //   console.log(cookieStore);
-  const token = cookieStore.get("access_token")?.value;
-  //   console.log(token)
+    // console.log(cookieStore);
+  const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
   const res = await fetch(`${API}${path}`, {
     ...options,
     headers: {
