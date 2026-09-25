@@ -61,3 +61,36 @@ export async function getInstallationById( id : number ){
     console.log((error as Error).message)
   }
 }
+
+export async function getMeasurementList(){
+  try{
+    const res = api("/measurements", {
+      method: "GET",
+    })
+    return res
+  } catch(error){
+    console.log((error as Error).message)
+  }
+}
+
+export async function getMeasurement(id: number){
+  try{
+    const res = api(`/measurement/${id}`, {
+      method: "GET",
+    })
+    return res
+  } catch(error){
+    console.log((error as Error).message)
+  }
+}
+
+export async function getWeatherList(id: number){
+  try{
+    const res = api(`/weather/${id}`, {
+      method: "POST",
+    })
+    return res
+  } catch(error){
+    console.log((error as Error).message)
+  }
+}

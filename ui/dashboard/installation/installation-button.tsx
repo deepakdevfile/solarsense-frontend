@@ -14,11 +14,14 @@ import { deleteInstallation } from "@/lib/actions";
 
 export function DeleteButton({ id }: { id: number }){
   function handleClick(){
+    if(!confirm("Delete this installation and its stored measurements/weather?")){
+      return;
+    }
     deleteInstallation(id)
   }
   return (
     <button 
-      className="rounded-lg bg-slate-900 px-4 py- font-semibold text-white hover:bg-slate-700 disabled:opacity-50 "
+      className="rounded-lg bg-red-600 px-4 py- font-semibold text-white hover:bg-red-700 disabled:opacity-50 "
       onClick={handleClick}
     >
       Delete

@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { Installation, InstallationID, UserData } from "./types";
 import { redirect } from "next/navigation";
@@ -74,19 +74,19 @@ export async function loginUser(formData: UserData) {
     // console.log(res);
     const setCookieHeader = res.headers.get("set-cookie");
     // console.log(setCookieHeader);
-    if(setCookieHeader){
+    if (setCookieHeader) {
       const tokenMatch = setCookieHeader.match(/access-token=([^;]+)/);
       // console.log(tokenMatch);
       const token = tokenMatch ? tokenMatch[1] : null;
       // console.log(token);
-      if(token){
+      if (token) {
         const cookieStore = await cookies();
-        cookieStore.delete({name: "access-token", path: '/'});
-        cookieStore.set('access-token', token, {
+        cookieStore.delete({ name: "access-token", path: "/" });
+        cookieStore.set("access-token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
           maxAge: 86400,
         });
         // console.log(cookieStore);
@@ -106,12 +106,12 @@ export async function logoutUser() {
     });
 
     const cookieStore = await cookies();
-    cookieStore.delete({name: "access-token", path: '/'});
+    cookieStore.delete({ name: "access-token", path: "/" });
   } catch (error) {
     console.log((error as Error).message);
   }
 
-  redirect('/')
+  redirect("/");
 }
 
 export async function addInstallation(formData: Installation) {
@@ -137,7 +137,7 @@ export async function addInstallation(formData: Installation) {
     console.log((error as Error).message);
   }
 
-  redirect("/dashboard")
+  redirect("/dashboard");
 }
 
 export async function updateInstallation(formData: InstallationID) {
@@ -187,4 +187,37 @@ export async function deleteInstallation(id: number) {
   }
 
   redirect("/dashboard");
+}
+
+export async function addInstallationMeasurement(id: number) {
+  try {
+    const res = api(`/installation/${id}/measurements`, {
+      method: "POST",
+    });
+    return (await res).json();
+  } catch (error) {
+    console.log((error as Error).message);
+  }
+}
+
+export async function importMeasurement(){
+  try{
+    const res = api(`/installation/import`, {
+      method: "POST",
+    })
+    return (await res).json();
+  } catch(error){
+    console.log((error as Error).message)
+  }
+}
+
+export async function syncWeather(id: number){
+  try{
+    const res = api(`/weather/${id}/sync`, {
+      method: "POST",
+    })
+    return (await res).json()
+  } catch(error){
+    console.log((error as Error).message)
+  }
 }

@@ -1,25 +1,26 @@
 
 import { LogoutButton } from "../logout/buttons";
 import InstallationForm from "./installation/installation-form";
-import { getUser, getInstallation } from "@/lib/data";
+import { getUser, getInstallation, getMeasurementList } from "@/lib/data";
 import { InstallationID } from "@/lib/types";
 // EditButton;
 import { DeleteButton } from "./installation/installation-button";
 import Link from "next/link";
+import FileInput from "./files/file-input-form";
 
 export default async function DashboardPage() {
   const user = await getUser()
   // console.log(user)
   const installations = await getInstallation()
   // console.log(installations)
-  // const measurements = await getMeasurement()
-  // console.log(measurements)
+  const measurements = await getMeasurementList()
+  console.log(measurements)
 
   return (
     <main className="min-h-screen">
       <header className="border-b bg-white">
         <div className="mx-auto flex mx-w-6xl justify-between p-5">
-          <b>SolarSense</b>
+          <b>☀ SolarSense</b>
           <LogoutButton />
         </div>
       </header>
@@ -27,18 +28,29 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-bold">Welcome, {user.email} </h1>
         <div className="grid gap-4 md:grid-cols-3">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-slate-500">Installation</p>
+            <p className="text-slate-500">Installations</p>
             <b className="text-3xl">{installations.length}</b>
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-slate-500">Readings</p>
+            <p className="text-slate-500">Measurements</p>
             <b className="text-3xl">Item length</b>
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-slate-500">Energy</p>
+            <p className="text-slate-500">Recorded Energy</p>
             <b className="text-3xl">In kWh</b>
           </section>
         </div>
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="mt-5 flex h-56 items-end gap-1 rounded-xl bg-slate-50 p-4">
+            Recent power output
+          </h2>
+          <div className="flex-1 rounded-t bg-yellow-500">Readings Lists</div>
+          <div>
+            <p className="m-auto text-slate-500">
+              Import a CSV to see production data.
+            </p>
+          </div>
+        </section>
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold">Add installation</h2>
           <div>
@@ -49,7 +61,10 @@ export default async function DashboardPage() {
           <h2 className="text-xl font-bold">Installations</h2>
           <div className="mt-3 divide-y">
             {installations.map((installation: InstallationID) => (
-              <div className="flex justify-between py-3" key={installation.id}>
+              <div
+                className="flex flex-wrap items-center justify-between py-3"
+                key={installation.id}
+              >
                 <span>
                   {installation.name}
                   <small className="ml-2 text-slate-500">
@@ -70,6 +85,19 @@ export default async function DashboardPage() {
               </div>
             ))}
           </div>
+        </section>
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="mt-1 text-sm text-slate-500">Data pipeline</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Choose an installation, import historical solar measurements and
+            sync weather
+          </p>
+          <select name="" id="">
+            <option value="">option 1</option>
+            <option value="">option 2</option>
+          </select>
+          <FileInput />
+          <p>CSV columns: timestamp, power_kw, energy_kwh</p>
         </section>
       </div>
     </main>
