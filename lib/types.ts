@@ -1,10 +1,12 @@
 export type UserData = {
+  name: string;
   email: string;
   password: string;
 };
 
 export type UserDataID = {
   id: number;
+  name: string;
   email: string;
   password: string;
 };
@@ -12,6 +14,8 @@ export type UserDataID = {
 export type Installation = {
   name: string;
   location: string;
+  latitude: number;
+  longitude: number;
   capacity: number;
 };
 
@@ -19,6 +23,8 @@ export type InstallationID = {
   name: string;
   id: number;
   location: string;
+  latitude: number;
+  longitude: number;
   capacity: number;
 };
 

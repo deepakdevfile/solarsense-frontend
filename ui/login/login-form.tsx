@@ -5,13 +5,14 @@ import { loginUser } from "@/lib/actions"
 import { useRouter } from "next/navigation"
 
 const initialState = {
+    name: "",
     email: "",
     password: "",
 }
 
 export default function LoginForm(){
     const [formData, setFormData] = useState(initialState)
-    const {email, password} = formData
+    const {name, email, password} = formData
     const router = useRouter()
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>){

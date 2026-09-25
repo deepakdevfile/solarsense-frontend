@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const installations = await getInstallation()
   // console.log(installations)
   const measurements = await getMeasurementList()
-  console.log(measurements)
+  // console.log(measurements)
 
   return (
     <main className="min-h-screen">
@@ -52,13 +52,13 @@ export default async function DashboardPage() {
           </div>
         </section>
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-bold">Add installation</h2>
-          <div>
-            <InstallationForm />
-          </div>
-        </section>
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold">Installations</h2>
+          <Link
+            href={`/dashboard/installation/create`}
+            className="rounded-lg bg-slate-900 px-4 py- font-semibold text-white hover:bg-slate-700 disabled:opacity-50 "
+          >
+            Add installation
+          </Link>
           <div className="mt-3 divide-y">
             {installations.map((installation: InstallationID) => (
               <div

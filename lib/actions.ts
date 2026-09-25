@@ -23,13 +23,14 @@ async function api(path: string, options: RequestInit = {}) {
 }
 
 export async function registerUser(formData: UserData) {
+  const name = formData.name;
   const email = formData.email;
   const password = formData.password;
 
   try {
     const res = await api("/auth/register", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ name, email, password }),
     });
     // console.log("Registering user, inspect from here.")
 
@@ -117,9 +118,11 @@ export async function logoutUser() {
 export async function addInstallation(formData: Installation) {
   const name = formData.name[0];
   const location = formData.location[0];
+  const latitude = Number(formData.latitude);
+  const longitude = Number(formData.longitude);
   const capacity = Number(formData.capacity);
 
-  // console.log(JSON.stringify({ name, location, capacity }));
+  // console.log(JSON.stringify({ name, location, latitude, longitude, capacity }));
 
   try {
     const cookieStore = await cookies();
@@ -128,7 +131,7 @@ export async function addInstallation(formData: Installation) {
     // console.log(token)
     const res = await api("/installation", {
       method: "POST",
-      body: JSON.stringify({ name, location, capacity }),
+      body: JSON.stringify({ name, location, latitude, longitude, capacity }),
       headers: {
         Cookie: `access-token=${token}`,
       },
@@ -145,11 +148,15 @@ export async function updateInstallation(formData: InstallationID) {
   const name = formData.name[0];
   const id = formData.id;
   const location = formData.location[0];
+  const latitude = Number(formData.latitude);
+  const longitude = Number(formData.longitude);
   const capacity = Number(formData.capacity);
 
   // console.log(name)
   // console.log(id)
   // console.log(location)
+  // console.log(latitude)
+  // console.log(longitude)
   // console.log(capacity)
   try {
     const cookieStore = await cookies();
@@ -158,10 +165,10 @@ export async function updateInstallation(formData: InstallationID) {
     // console.log(token)
     const res = await api(`/installation/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ name, location, capacity }),
       headers: {
         Cookie: `access-token=${token}`,
       },
+      body: JSON.stringify({ name, location, latitude, longitude, capacity }),
     });
   } catch (error) {
     console.log((error as Error).message);
