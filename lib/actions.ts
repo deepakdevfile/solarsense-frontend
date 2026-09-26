@@ -207,12 +207,42 @@ export async function addInstallationMeasurement(id: number) {
   }
 }
 
-export async function importMeasurement(){
+export async function importMeasurements(id: number, file: File){
+  const form = new FormData();
+  // console.log(form);
+  form.append("file", file);
+  // console.log(form);
+  
   try{
-    const res = api(`/installation/import`, {
+    const cookieStore = await cookies();
+    // console.log(cookieStore);
+    const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
+    
+    const res = await fetch(`${API}/measurement/import/${id}`, {
       method: "POST",
-    })
-    return (await res).json();
+      body: form,
+      headers: {
+        Cookie: `access-token=${token}`, // had to make the request by ourselves because needs a content type to be multipart/json which browser atomatically sets 
+      },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        (await res.json().catch(() => ({ detail: "Request failed" }))).detail,
+      );
+    }
+
+    // console.log(res)
+
+    return res.json() as Promise<{
+      inserted: number;
+      skipped_duplicates: number;
+      rejected: number;
+      errors: string[];
+    }>;
+    // promise part is pending here
   } catch(error){
     console.log((error as Error).message)
   }
@@ -220,10 +250,21 @@ export async function importMeasurement(){
 
 export async function syncWeather(id: number){
   try{
+    const cookieStore = await cookies();
+    // console.log(cookieStore);
+    const token = cookieStore.get("access-token")?.value;
+    // console.log(token)
+
     const res = api(`/weather/${id}/sync`, {
       method: "POST",
-    })
-    return (await res).json()
+      headers: {
+        Cookie: `access-token=${token}`,
+      },
+    });
+
+    // console.log(res);
+
+    return (await res).json();
   } catch(error){
     console.log((error as Error).message)
   }

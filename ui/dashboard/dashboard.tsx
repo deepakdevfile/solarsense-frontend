@@ -6,7 +6,7 @@ import { InstallationID } from "@/lib/types";
 // EditButton;
 import { DeleteButton } from "./installation/installation-button";
 import Link from "next/link";
-import FileInput from "./files/file-input-form";
+import SelectMeasurement from "./measurement/select-measurement";
 
 export default async function DashboardPage() {
   const user = await getUser()
@@ -87,16 +87,12 @@ export default async function DashboardPage() {
           </div>
         </section>
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mt-1 text-sm text-slate-500">Data pipeline</h2>
+          <h2 className="text-xl font-bold">Data pipeline</h2>
           <p className="mt-1 text-sm text-slate-500">
             Choose an installation, import historical solar measurements and
             sync weather
           </p>
-          <select name="" id="">
-            <option value="">option 1</option>
-            <option value="">option 2</option>
-          </select>
-          <FileInput />
+          <SelectMeasurement installations={installations} />
           <p>CSV columns: timestamp, power_kw, energy_kwh</p>
         </section>
       </div>
