@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+const API = process.env.NEXT_API_URL;
 
 async function api(path: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
