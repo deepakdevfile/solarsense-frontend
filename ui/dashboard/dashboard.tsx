@@ -2,7 +2,7 @@
 import { LogoutButton } from "../logout/buttons";
 import InstallationForm from "./installation/installation-form";
 import { getUser, getInstallation, getMeasurementList } from "@/lib/data";
-import { InstallationID } from "@/lib/types";
+import { InstallationID, MeasurementID } from "@/lib/types";
 // EditButton;
 import { DeleteButton } from "./installation/installation-button";
 import Link from "next/link";
@@ -15,6 +15,10 @@ export default async function DashboardPage() {
   // console.log(installations)
   const measurements = await getMeasurementList()
   // console.log(measurements)
+  const total = measurements.reduce((addition: any, value: any) => addition + value.energy_kwh, 0);
+  // console.log(total)
+  const max = Math.max(...measurements.slice(-24).map((x: any) => x.power_kw), 1)
+  // console.log(max)
 
   return (
     <main className="min-h-screen">
@@ -33,18 +37,34 @@ export default async function DashboardPage() {
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-slate-500">Measurements</p>
-            <b className="text-3xl">Item length</b>
+            <b className="text-3xl">{measurements.length}</b>
           </section>
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-slate-500">Recorded Energy</p>
-            <b className="text-3xl">In kWh</b>
+            <b className="text-3xl">{total.toFixed(2)} kWh</b>
           </section>
         </div>
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mt-5 flex h-56 items-end gap-1 rounded-xl bg-slate-50 p-4">
-            Recent power output
-          </h2>
-          <div className="flex-1 rounded-t bg-yellow-500">Readings Lists</div>
+          <h2 className="text-xl font-bold">Recent power output</h2>
+          <div className="mt-5 flex h-56 items-end gap-1 rounded-xl bg-slate-50 p-4">
+            {measurements.slice(-24).map((measurement: MeasurementID) => (
+              <div
+                key={measurement.id}
+                title={`${measurement.power_kw} kW`}
+                className="flex-1 rounded-t bg-yellow-500"
+                style={{
+                  height: `${Math.max((measurement.power_kw / max) * 100, 3)}%`,
+                }}
+              >
+                {measurement.power_kw}
+              </div>
+            ))}
+            {!measurements.length && (
+              <p className="m-auto text-slate-500">
+                Import a CSV to see production data.
+              </p>
+            )}
+          </div>
           <div>
             <p className="m-auto text-slate-500">
               Import a CSV to see production data.

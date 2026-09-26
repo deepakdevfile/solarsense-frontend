@@ -73,7 +73,7 @@ export async function getMeasurementList(){
   }
 }
 
-export async function getMeasurement(id: number){
+export async function getMeasurementById(id: number){
   try{
     const res = api(`/measurement/${id}`, {
       method: "GET",
